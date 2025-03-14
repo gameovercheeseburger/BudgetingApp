@@ -15,5 +15,5 @@ public class ApiController {
         return "Backend connected successfully!";
     }
 
-    // Add more endpoints here
+    // Add more endpoints.
 }
