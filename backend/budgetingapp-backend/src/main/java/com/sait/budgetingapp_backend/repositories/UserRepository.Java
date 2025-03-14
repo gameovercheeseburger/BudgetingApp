@@ -1,6 +1,6 @@
 package com.sait.budgetingapp_backend.repositories;
 
-import com.sait.budgetingapp_backend.models.User; // ✅ Fix package import
+import com.sait.budgetingapp_backend.models.User; 
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
