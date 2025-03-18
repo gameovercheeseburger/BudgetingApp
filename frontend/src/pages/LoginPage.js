@@ -27,11 +27,12 @@ function LoginPage() {
 
         <button type="submit" 
           class='w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded 
-          text-white bg-green-600 hover:bg-green-700 focus:outline-none mb-4'>Login</button>
+          text-white bg-green-600 hover:bg-green-700 focus:outline-none mb-4
+          transition duration-300 ease-in-out'>Login</button>
       </form>
       <p class='flex justify-center'>Don't have an account? 
         <Link to="/register">
-          <p class='pl-1 font-semibold hover:underline'>Register</p>
+          <p class='pl-1 font-semibold hover:underline '>Register</p>
         </Link>
       </p>
       </div>
