@@ -1,29 +1,29 @@
-    package com.sait.budgetingapp_backend.config;
+package com.sait.budgetingapp_backend.config;
 
-    import org.springframework.boot.context.properties.ConfigurationProperties;
-    import org.springframework.stereotype.Component;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
-    @Component
-    @ConfigurationProperties(prefix = "jwt")
-    public class JwtConfig {
-        
-        private String secret;
-        private long expiration;
+@Component
+@ConfigurationProperties(prefix = "jwt")
+public class JwtConfig {
 
-        // Getters and Setters
-        public String getSecret() {
-            return secret;
-        }
+    private String secret;
+    private long expiration;
 
-        public void setSecret(String secret) {
-            this.secret = secret;
-        }
-
-        public long getExpiration() {
-            return expiration;
-        }
-
-        public void setExpiration(long expiration) {
-            this.expiration = expiration;
-        }
+    // Getters and Setters
+    public String getSecret() {
+        return secret;
     }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
+
+    public long getExpiration() {
+        return expiration;
+    }
+
+    public void setExpiration(long expiration) {
+        this.expiration = expiration;
+    }
+}

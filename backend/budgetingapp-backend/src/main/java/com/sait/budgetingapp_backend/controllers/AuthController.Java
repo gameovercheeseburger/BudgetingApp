@@ -29,6 +29,10 @@ public class AuthController {
         String email = userData.get("email");
         String password = userData.get("password");
 
+        if (name == null || name.isEmpty() || email == null || email.isEmpty() || password == null || password.isEmpty()) {
+            return "Invalid input data!";
+        }
+
         if (userRepository.findByEmail(email).isPresent()) {
             return "User already exists!";
         }
@@ -44,7 +48,11 @@ public class AuthController {
         Optional<User> user = userRepository.findByEmail(email);
 
         if (user.isPresent() && passwordEncoder.matches(password, user.get().getPassword())) {
-            return jwtUtil.generateToken(email);
+            if (user.get().isActive()) {
+                return jwtUtil.generateToken(email);
+            } else {
+                return "User is not active!";
+            }
         }
         return "Invalid email or password!";
     }

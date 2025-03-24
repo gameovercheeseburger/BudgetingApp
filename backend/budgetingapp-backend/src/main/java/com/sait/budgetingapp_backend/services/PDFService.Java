@@ -22,7 +22,7 @@ public class PDFService {
              PDDocument document = PDDocument.load(inputStream)) {
 
             PDFTextStripper pdfStripper = new PDFTextStripper();
-            String text = pdfTextStripper.getText(document);
+            String text = pdfStripper.getText(document);
 
             // Regex to extract amounts and descriptions (Example: "$50.00 - Grocery Shopping")
             String regex = "\\$(\\d+\\.\\d{2})\\s-\\s([A-Za-z\\s]+)";

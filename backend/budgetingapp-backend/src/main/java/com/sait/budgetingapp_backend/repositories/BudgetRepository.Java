@@ -1,4 +1,4 @@
-package com.sait.budgetingapp_backend.repository;
+package com.sait.budgetingapp_backend.repositories;
 
 import com.sait.budgetingapp_backend.models.Budget;
 import com.sait.budgetingapp_backend.models.User;
