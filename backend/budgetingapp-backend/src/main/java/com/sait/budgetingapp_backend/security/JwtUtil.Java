@@ -1,65 +1,40 @@
 package com.sait.budgetingapp_backend.security;
 
+import com.sait.budgetingapp_backend.config.JwtConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.security.core.userdetails.UserDetails;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import javax.crypto.SecretKey;
 import org.springframework.stereotype.Component;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 public class JwtUtil {
+    private final SecretKey secretKey;
 
-    private static final String SECRET = "your-secret-key";
-    private static final Long EXPIRATION = 3600L;
-
-    public String extractEmail(String token) {
-        try {
-            Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
-            return claims.getSubject();
-        } catch (Exception e) {
-            return null;
-        }
+    public JwtUtil(JwtConfig jwtConfig) {
+        byte[] keyBytes = Decoders.BASE64.decode(jwtConfig.getSecret());
+        this.secretKey = Keys.hmacShaKeyFor(keyBytes);  // Ensure it's a SecretKey
     }
 
-    public Date extractExpiration(String token) {
-        try {
-            Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
-            return claims.getExpiration();
-        } catch (Exception e) {
-            return null;
-        }
+    public String extractUsername(String token) {
+        return Jwts.parser()
+                .verifyWith(secretKey)  // Proper key usage
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
     }
 
-    public boolean isTokenExpired(String token) {
+    public boolean validateToken(String token) {
         try {
-            Date expiration = extractExpiration(token);
-            return expiration.before(new Date());
-        } catch (Exception e) {
+            Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token); // Will throw exception if invalid
             return true;
+        } catch (Exception e) {
+            return false;
         }
-    }
-
-    public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userDetails.getUsername());
-    }
-
-    private String createToken(Map<String, Object> claims, String subject) {
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION * 1000))
-                .signWith(SignatureAlgorithm.HS512, SECRET)
-                .compact();
-    }
-
-    public boolean validateToken(String token, UserDetails userDetails) {
-        String email = extractEmail(token);
-        return (email.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 }

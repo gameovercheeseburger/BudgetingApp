@@ -15,7 +15,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start:backend": "cd ../backend && mvn spring-boot:run",
+    "start:backend": "cd ..\\backend\\budgetingapp-backend && mvnw.cmd spring-boot:run",
     "start:all": "concurrently \"npm start\" \"npm run start:backend\"",
     "build": "react-scripts build",
     "test": "react-scripts test",

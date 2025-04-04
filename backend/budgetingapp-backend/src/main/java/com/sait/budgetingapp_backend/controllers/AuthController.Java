@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = "http://localhost:3000") // Allow frontend to communicate with backend
 public class AuthController {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -36,6 +37,7 @@ public class AuthController {
         if (userRepository.findByEmail(email).isPresent()) {
             return "User already exists!";
         }
+
         User user = new User(name, email, passwordEncoder.encode(password), Role.USER);
         userRepository.save(user);
         return "User registered successfully!";
@@ -48,7 +50,7 @@ public class AuthController {
         Optional<User> user = userRepository.findByEmail(email);
 
         if (user.isPresent() && passwordEncoder.matches(password, user.get().getPassword())) {
-            if (user.get().isActive()) {
+            if (user.get().isActive()) {    
                 return jwtUtil.generateToken(email);
             } else {
                 return "User is not active!";

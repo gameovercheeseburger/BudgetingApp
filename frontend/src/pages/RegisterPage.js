@@ -5,18 +5,47 @@ function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch("http://localhost:8080/auth/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password })
-    });
-    if (response.ok) {
-      navigate("/login");
+    try {
+      if (!name || !email || !password) {
+        setErrors({ message: "Please fill in all fields" });
+        return;
+      }
+
+      if (!validateEmail(email)) {
+        setErrors({ message: "Invalid email address" });
+        return;
+      }
+
+      if (password.length < 8) {
+        setErrors({ message: "Password must be at least 8 characters long" });
+        return;
+      }
+
+      const response = await fetch("http://localhost:8080/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password })
+      });
+
+      if (response.ok) {
+        navigate("/login");
+      } else {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setErrors({ message: error.message });
     }
+  };
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
   };
 
   return (
@@ -41,6 +70,7 @@ function RegisterPage() {
             text-white bg-green-600 hover:bg-green-700 focus:outline-none mb-4
             transition duration-300 ease-in-out'>Register</button>
 
+          {errors.message && <p style={{ color: 'red' }}>{errors.message}</p>}
         </form>
       </div>
       
