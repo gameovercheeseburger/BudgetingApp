@@ -20,14 +20,28 @@ function RegisterPage() {
   };
 
   return (
-    <div>
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
-        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        <button type="submit">Register</button>
-      </form>
+    <div class='bg-emerald-700/40  h-screen flex items-center justify-center flex-col'>
+      <div class='bg-white px-7 py-7 rounded-md shadow-md'>
+        <h2 class="font-semibold text-4xl py-5 flex justify-center">Register</h2>
+        <form onSubmit={handleSubmit}>
+          <label class='text-sm text-slate-800 font-medium mb-2 block'>Name</label>  
+          <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required
+            class='w-full text-sm px-4 py-2 rounded-md outline-none border mb-4' />
+          
+          <label class='text-sm text-slate-800 font-medium mb-2 block'>Email</label>
+          <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required
+            class='w-full text-sm px-4 py-2 rounded-md outline-none border mb-4' />
+          
+          <label class='text-sm text-slate-800 font-medium mb-2 block'>Password</label>
+          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required
+            class='w-full text-sm px-4 py-2 rounded-md outline-none border mb-6' />
+          
+          <button type="submit"
+            class='w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded 
+            text-white bg-green-600 hover:bg-green-700 focus:outline-none mb-4'>Register</button>
+        </form>
+      </div>
+      
     </div>
   );
 }
