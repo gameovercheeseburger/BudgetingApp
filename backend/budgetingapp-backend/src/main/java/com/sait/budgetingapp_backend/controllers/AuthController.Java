@@ -23,6 +23,11 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
     }
+    
+    @GetMapping("/ping")
+    public String ping() {
+        return "AuthController is alive!";
+    }
 
     @PostMapping("/register")
     public String registerUser(@RequestBody Map<String, String> userData) {

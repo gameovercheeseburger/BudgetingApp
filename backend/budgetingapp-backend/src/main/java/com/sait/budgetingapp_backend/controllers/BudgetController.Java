@@ -2,8 +2,8 @@ package com.sait.budgetingapp_backend.controllers;
 
 import com.sait.budgetingapp_backend.models.Budget;
 import com.sait.budgetingapp_backend.models.User;
-import com.sait.budgetingapp_backend.repository.BudgetRepository;
-import com.sait.budgetingapp_backend.repository.UserRepository;
+import com.sait.budgetingapp_backend.repositories.UserRepository;
+import com.sait.budgetingapp_backend.repositories.BudgetRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface BudgetRepository extends JpaRepository<Budget, Long> {
-    List<Budget> findByUser(User user); // Find budgets by User
+    List<Budget> findByUser(User user); 
+    List<Budget> findByUserId(Long userId);
 }
