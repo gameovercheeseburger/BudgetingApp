@@ -48,12 +48,13 @@ var deleteItem = function(item) {
 };
 
 // loader
-exports.dashboardLoader = function() {
-  var userName = fetchData("userName");
-  var budgets = fetchData("budgets"); 
-  var transactions = fetchData("transactions");
-  return {userName: userName, budgets: budgets, transactions: transactions}
-}
+exports.dashboardLoader = async function () {
+  const userName = await fetchData("userName");
+  const budgets = await fetchData("budgets");
+  const transactions = await fetchData("transactions");
+  return { userName, budgets, transactions };
+};
+
 
 // action
 exports.dashboardAction = function(request) {
