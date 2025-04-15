@@ -44,32 +44,46 @@ public class BudgetController {
             .orElse(ResponseEntity.notFound().build());
     }
 
-    // Create new budget
     @PostMapping
-    public ResponseEntity<?> createBudget(@RequestParam Long userId, @RequestBody Map<String, String> request) {
+    public ResponseEntity<?> createBudget(@RequestBody Map<String, Object> request) {
         try {
             // 1. Validate input
-            if (request.get("category") == null || request.get("amount") == null) {
-                return ResponseEntity.badRequest().body("Category and amount are required");
+            if (request.get("category") == null || request.get("amount") == null || request.get("userId") == null) {
+                return ResponseEntity.badRequest().body("Category, amount, and userId are required");
             }
     
             // 2. Find user
+            Long userId;
+            try {
+                userId = Long.parseLong(request.get("userId").toString());
+            } catch (NumberFormatException e) {
+                return ResponseEntity.badRequest().body("Invalid userId format");
+            }
+    
             User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     
             // 3. Create and save budget
             Budget budget = new Budget();
             budget.setUser(user);
-            budget.setCategory(request.get("category"));
-            budget.setAmount(new BigDecimal(request.get("amount")));
-    
-            // Log before saving to check the data
-            System.out.println("Saving budget: " + budget);
+            budget.setCategory(request.get("category").toString());
+            
+            // Handle amount conversion (supports both String and Number inputs)
+            BigDecimal amount;
+            try {
+                Object amountObj = request.get("amount");
+                if (amountObj instanceof Number) {
+                    amount = BigDecimal.valueOf(((Number) amountObj).doubleValue());
+                } else {
+                    amount = new BigDecimal(amountObj.toString());
+                }
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body("Invalid amount format");
+            }
+            
+            budget.setAmount(amount);
     
             Budget savedBudget = budgetRepository.save(budget);
-    
-            // Log after saving to check if the saved budget is correct
-            System.out.println("Saved budget: " + savedBudget);
     
             // 4. Verify save worked
             if (savedBudget.getId() == null) {
@@ -79,6 +93,7 @@ public class BudgetController {
             return ResponseEntity.status(HttpStatus.CREATED).body(savedBudget);
     
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("Error: " + e.getMessage());
         }

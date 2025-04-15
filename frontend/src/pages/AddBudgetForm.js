@@ -27,12 +27,19 @@ const AddBudgetForm = ({ onSuccess }) => {
         throw new Error("Session expired. Please login again.");
       }
 
-      // Convert amount to BigDecimal format expected by backend
+      // Validate and format the request data
+      const amountValue = parseFloat(newBudgetData.amount);
+      if (isNaN(amountValue) || amountValue <= 0) {
+        throw new Error("Please enter a valid positive amount");
+      }
+
       const requestBody = {
         category: newBudgetData.category.trim(),
-        amount: parseFloat(newBudgetData.amount),
+        amount: amountValue,
         userId: user.id
       };
+
+      console.log("Submitting budget:", requestBody); // Debug log
 
       const response = await fetch("http://localhost:8080/api/budgets", {
         method: "POST",
@@ -43,16 +50,24 @@ const AddBudgetForm = ({ onSuccess }) => {
         body: JSON.stringify(requestBody),
       });
 
+      // Handle non-OK responses
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || "Budget creation failed");
+        let errorMessage = "Budget creation failed";
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.message || errorMessage;
+        } catch (e) {
+          const text = await response.text();
+          errorMessage = text || errorMessage;
+        }
+        throw new Error(errorMessage);
       }
 
       return await response.json();
     } catch (error) {
       console.error("API Error:", error);
       if (error.message.includes("Failed to fetch")) {
-        throw new Error("Server unavailable. Please try later.");
+        throw new Error("Cannot connect to server. Please try again later.");
       }
       throw error;
     }
@@ -64,10 +79,13 @@ const AddBudgetForm = ({ onSuccess }) => {
     setIsSubmitting(true);
 
     try {
-      // Validate amount is a positive number
-      const amountValue = parseFloat(formData.amount);
-      if (isNaN(amountValue)) {
-        throw new Error("Please enter a valid amount");
+      // Validate form data
+      if (!formData.category.trim()) {
+        throw new Error("Category is required");
+      }
+
+      if (!formData.amount) {
+        throw new Error("Amount is required");
       }
 
       await createBudget({
@@ -75,6 +93,7 @@ const AddBudgetForm = ({ onSuccess }) => {
         amount: formData.amount
       });
 
+      // Reset form and handle success
       setFormData({ category: "", amount: "" });
       if (onSuccess) onSuccess();
       navigate("/dashboard");
@@ -94,7 +113,8 @@ const AddBudgetForm = ({ onSuccess }) => {
           padding: "1rem",
           borderRadius: "4px",
           marginBottom: "1.5rem",
-          border: "1px solid #e63946"
+          border: "1px solid #e63946",
+          fontSize: "0.9rem"
         }}>
           {error}
         </div>

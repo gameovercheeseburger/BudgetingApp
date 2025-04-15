@@ -1,0 +1,150 @@
+/* AddTransactionPage.css */
+
+/* Basic page styling */
+.transactions-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Page title */
+.page-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Transaction form styling */
+.transaction-form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.input-field {
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  outline: none;
+}
+
+.input-field:focus {
+  border-color: #6c63ff;
+}
+
+/* Form buttons */
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.submit-button,
+.cancel-button {
+  padding: 12px 25px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.submit-button {
+  background-color: #6c63ff;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #5748d4;
+}
+
+.cancel-button {
+  background-color: #e0e0e0;
+  color: #333;
+  transition: background-color 0.3s ease;
+}
+
+.cancel-button:hover {
+  background-color: #c2c2c2;
+}
+
+/* Add transaction button */
+.visible-add-button {
+  background-color: #6c63ff;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  transition: background-color 0.3s ease;
+}
+
+.visible-add-button:hover {
+  background-color: #5748d4;
+}
+
+/* Transaction list styling */
+.transactions-list {
+  margin-top: 40px;
+}
+
+.transaction-item {
+  background-color: #fff;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.transaction-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.transaction-description {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.transaction-amount {
+  font-size: 1.2rem;
+  color: #6c63ff;
+}
+
+@media (max-width: 768px) {
+  /* Adjustments for smaller screens */
+  .transactions-page {
+    padding: 15px;
+  }
+
+  .transaction-form {
+    padding: 15px;
+  }
+
+  .form-inputs {
+    gap: 10px;
+  }
+
+  .submit-button,
+  .cancel-button {
+    padding: 10px 20px;
+  }
+}

@@ -45,21 +45,4 @@ public class ApiController {
         return budgetRepository.findAll();
     }
 
-    // Get all transactions
-    @GetMapping("/transactions")
-    public List<Transaction> getAllTransactions() {
-        return transactionRepository.findAll();
-    }
-
-    // Get transactions by user ID
-    @GetMapping("/transactions/user/{userId}")
-    public List<Transaction> getTransactionsByUser(@PathVariable Long userId) {
-        return transactionRepository.findByUserId(userId);
-    }
-
-    // Get transactions by budget ID
-    @GetMapping("/transactions/budget/{budgetId}")
-    public List<Transaction> getTransactionsByBudget(@PathVariable Long budgetId) {
-        return transactionRepository.findByBudgetId(budgetId);
-    }
 }

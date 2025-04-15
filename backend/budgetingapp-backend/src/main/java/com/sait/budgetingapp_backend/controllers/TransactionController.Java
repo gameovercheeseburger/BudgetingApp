@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/transactions")
+@RequestMapping("/api/transactions")
+@CrossOrigin(origins = "http://localhost:3000")
 public class TransactionController {
     private final TransactionRepository transactionRepository;
 
@@ -17,6 +18,16 @@ public class TransactionController {
     @GetMapping
     public List<Transaction> getAllTransactions() {
         return transactionRepository.findAll();
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<Transaction> getTransactionsByUser(@PathVariable Long userId) {
+        return transactionRepository.findByUserId(userId);
+    }
+
+    @GetMapping("/budget/{budgetId}")
+    public List<Transaction> getTransactionsByBudget(@PathVariable Long budgetId) {
+        return transactionRepository.findByBudgetId(budgetId);
     }
 
     @PostMapping
