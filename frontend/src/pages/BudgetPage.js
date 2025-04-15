@@ -6,14 +6,14 @@ function BudgetPage() {
   const [amount, setAmount] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:8080/budget")
+    fetch("http://localhost:8080/api/budgets")
       .then((res) => res.json())
       .then((data) => setBudgets(data));
   }, []);
 
   const addBudget = async (e) => {
     e.preventDefault();
-    const response = await fetch("http://localhost:8080/budget", {
+    const response = await fetch("http://localhost:8080/api/budgets", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ category, amount })
