@@ -39,22 +39,10 @@ public class ApiController {
         return userRepository.findAll();
     }
 
-    // Get user by ID
-    @GetMapping("/users/{id}")
-    public Optional<User> getUserById(@PathVariable Long id) {
-        return userRepository.findById(id);
-    }
-
     // Get all budgets
     @GetMapping("/budgets")
     public List<Budget> getAllBudgets() {
         return budgetRepository.findAll();
-    }
-
-    // Get budgets by user ID
-    @GetMapping("/budgets/user/{userId}")
-    public List<Budget> getBudgetsByUser(@PathVariable Long userId) {
-        return budgetRepository.findByUserId(userId);
     }
 
     // Get all transactions

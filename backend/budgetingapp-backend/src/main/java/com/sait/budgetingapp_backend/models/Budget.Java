@@ -7,24 +7,28 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "budgets")
 public class Budget {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false) // Foreign key to User table
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Column(nullable = false)
     private String category;
 
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal amount;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    // Transient field for UI
+    @Transient
+    private BigDecimal remainingAmount;
+
+    // Constructors
     public Budget() {}
 
     public Budget(User user, String category, BigDecimal amount) {
@@ -48,4 +52,18 @@ public class Budget {
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    // New methods for remaining amount calculation
+    public BigDecimal getRemainingAmount() {
+        return remainingAmount;
+    }
+
+    public void setRemainingAmount(BigDecimal remainingAmount) {
+        this.remainingAmount = remainingAmount;
+    }
+
+    // Helper method to calculate remaining amount
+    public void calculateRemaining(BigDecimal spentAmount) {
+        this.remainingAmount = this.amount.subtract(spentAmount != null ? spentAmount : BigDecimal.ZERO);
+    }
 }
